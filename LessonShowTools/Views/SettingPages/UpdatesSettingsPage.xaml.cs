@@ -1,0 +1,218 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using LessonShowTools.Core.Abstractions.Controls;
+using LessonShowTools.Core.Abstractions.Services.Management;
+using LessonShowTools.Core.Attributes;
+using LessonShowTools.Core.Enums.SettingsWindow;
+using LessonShowTools.Core.Helpers;
+using LessonShowTools.Models;
+using LessonShowTools.Services;
+using LessonShowTools.Services.AppUpdating;
+using LessonShowTools.Services.Logging;
+using LessonShowTools.Shared.Enums;
+using LessonShowTools.ViewModels.SettingsPages;
+using MaterialDesignThemes.Wpf;
+using MdXaml;
+using Sentry;
+using Path = System.IO.Path;
+
+namespace LessonShowTools.Views.SettingPages;
+
+/// <summary>
+/// UpdatesSettingsPage.xaml 的交互逻辑
+/// </summary>
+[SettingsPageInfo("update", "更新", PackIconKind.UploadOutline, PackIconKind.Upload, true, SettingsPageCategory.Internal)]
+public partial class UpdatesSettingsPage : SettingsPageBase
+{
+    public SettingsService SettingsService { get; }
+
+    //public UpdateService UpdateService { get; }
+    public IManagementService ManagementService { get; }
+
+    public UpdateSettingsViewModel ViewModel { get; } = new();
+
+    public static readonly DependencyProperty IsEasterEggTriggeredProperty =
+    DependencyProperty.Register(nameof(IsEasterEggTriggered), typeof(bool), typeof(UpdatesSettingsPage),
+        new PropertyMetadata(false));
+
+    public bool IsEasterEggTriggered
+    {
+        get => (bool)GetValue(IsEasterEggTriggeredProperty);
+        set => SetValue(IsEasterEggTriggeredProperty, value);
+    }
+
+    public UpdatesSettingsPage(SettingsService settingsService, UpdateService updateService, IManagementService managementService)
+    {
+        DataContext = this;
+        SettingsService = settingsService;
+        //UpdateService = updateService;
+        ManagementService = managementService;
+        InitializeComponent();
+    }
+
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+        UpdateCache();
+        RefreshDescription();
+    }
+
+    private void SettingsOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        //Console.WriteLine(e.PropertyName);
+        switch (e.PropertyName)
+        {
+            case nameof(SettingsService.Settings.UpdateReleaseInfo):
+                UpdateCache();
+                break;
+            case nameof(SettingsService.Settings.SpeechSource):
+                RequestRestart();
+                break;
+        }
+
+        RefreshDescription();
+    }
+
+    private void UpdateCache()
+    {
+     
+    }
+
+    private void RefreshDescription()
+    {
+       // if (UpdateService.Index.Channels.TryGetValue(SettingsService.Settings.SelectedUpdateChannelV2, out var channelInfo))
+       //{
+        //    ViewModel.SelectedChannelModel = channelInfo;
+       //}
+    }
+
+    private void UpdateErrorMessage_OnActionClick(object sender, RoutedEventArgs e)
+    {
+        //UpdateService.NetworkErrorException = null;
+    }
+
+    private async void ButtonCheckUpdate_OnClick(object sender, RoutedEventArgs e)
+    {
+       // await UpdateService.CheckUpdateAsync();
+    }
+
+    private async void ButtonStartDownloading_OnClick(object sender, RoutedEventArgs e)
+    {
+       // await UpdateService.DownloadUpdateAsync();
+    }
+
+    private async void ButtonRestartToUpdate_OnClick(object sender, RoutedEventArgs e)
+    {
+      //  if (!File.Exists(Path.Combine(UpdateService.UpdateTempPath, "update.zip")))
+       //     return;
+       // await UpdateService.RestartAppToUpdateAsync();
+    }
+
+    private void ButtonCancelUpdate_OnClick(object sender, RoutedEventArgs e)
+    {
+        //if (UpdateService.CurrentWorkingStatus == UpdateWorkingStatus.DownloadingUpdates)
+        //{
+        //    UpdateService.StopDownloading();
+        //}
+
+        //if (SettingsService.Settings.LastUpdateStatus == UpdateStatus.UpdateDownloaded)
+        //{
+        //    _ = UpdateService.RemoveDownloadedFiles();
+        //}
+    }
+
+    private void ButtonDebugResetUpdate_OnClick(object sender, RoutedEventArgs e)
+    {
+       // SettingsService.Settings.LastUpdateStatus = UpdateStatus.UpToDate;
+    }
+
+    private void ButtonDebugDownloaded_OnClick(object sender, RoutedEventArgs e)
+    {
+        //SettingsService.Settings.LastUpdateStatus = UpdateStatus.UpdateDownloaded;
+    }
+
+    private void ButtonDebugNetworkError_OnClick(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void UIElement_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (!e.Handled)
+        {
+            // ListView拦截鼠标滚轮事件
+            e.Handled = true;
+
+            // 激发一个鼠标滚轮事件，冒泡给外层ListView接收到
+            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+            eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+            eventArg.Source = sender;
+            var parent = ((System.Windows.Controls.Control)sender).Parent as UIElement;
+            if (parent != null)
+            {
+                parent.RaiseEvent(eventArg);
+            }
+        }
+    }
+
+    private async void ButtonChangelogs_OnClick(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private async void MenuItemTestUpdateMirrors_OnClick(object sender, RoutedEventArgs e)
+    {
+        //await App.GetService<UpdateNodeSpeedTestingService>().RunSpeedTestAsync();
+    }
+
+    private void ButtonAdvancedSettings_OnClick(object sender, RoutedEventArgs e)
+    {
+        OpenDrawer("AdvancedUpdateSettings");
+    }
+
+    private async void ButtonForceUpdate_OnClick(object sender, RoutedEventArgs e)
+    {
+        CloseDrawer();
+       // await UpdateService.CheckUpdateAsync(isForce: true);
+    }
+
+    private void IconUpdateStatus_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        //if (ManagementService.Policy.DisableEasterEggs)
+        //{
+        //    return;
+        //}
+       // IsEasterEggTriggered = true;
+    }
+    private void UpdateServiceOnUpdateInfoUpdated(object? sender, EventArgs e)
+    {
+        UpdateCache();
+        RefreshDescription();
+    }
+
+    private void UpdatesSettingsPage_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        SettingsService.Settings.PropertyChanged += SettingsOnPropertyChanged;
+       // UpdateService.UpdateInfoUpdated += UpdateServiceOnUpdateInfoUpdated;
+    }
+
+
+    private void UpdatesSettingsPage_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        SettingsService.Settings.PropertyChanged -= SettingsOnPropertyChanged;
+        //UpdateService.UpdateInfoUpdated -= UpdateServiceOnUpdateInfoUpdated;
+    }
+}

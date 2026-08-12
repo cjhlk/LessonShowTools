@@ -1,0 +1,29 @@
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using LessonShowTools.Core.Abstractions.Controls;
+using LessonShowTools.Core.Abstractions.Services;
+using LessonShowTools.Core.Controls;
+using LessonShowTools.Models.NotificationProviderSettings;
+
+namespace LessonShowTools.Controls.NotificationProviders;
+
+/// <summary>
+/// AfterSchoolNotificationProviderSettingsControl.xaml 的交互逻辑
+/// </summary>
+public partial class AfterSchoolNotificationProviderSettingsControl : UserControl
+{
+    public AfterSchoolNotificationProviderSettings Settings { get; }
+
+    public AfterSchoolNotificationProviderSettingsControl(AfterSchoolNotificationProviderSettings settings)
+    {
+        Settings = settings;
+        InitializeComponent();
+    }
+
+    private void ButtonShowAttachedSettingsInfo_OnClick(object sender, RoutedEventArgs e)
+    {
+        SettingsPageBase.OpenDrawerCommand.Execute(new RootAttachedSettingsDependencyControl(IAttachedSettingsHostService.RegisteredControls.First(x => x.Guid == new Guid("8FBC3A26-6D20-44DD-B895-B9411E3DDC51"))));
+    }
+}

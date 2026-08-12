@@ -1,0 +1,52 @@
+{
+  "profiles": {
+    "LessonShowTools": {
+      "commandName": "Project"
+    },
+    "Remote": {
+      "commandName": "Project",
+      "workingDirectory": "X:\\",
+      "remoteDebugEnabled": true,
+      "remoteDebugMachine": "DESKTOP-P5BG208:4026",
+      "authenticationMode": "Windows"
+    },
+    "LessonShowTools (Quiet)": {
+      "commandName": "Project",
+      "commandLineArgs": "--quiet -psmk"
+    },
+    "LessonShowTools (禁用集控)": {
+      "commandName": "Project",
+      "commandLineArgs": "-dm"
+    },
+    "LessonShowTools (禁用集控) Sentry dbg": {
+      "commandName": "Project",
+      "commandLineArgs": "-dm -esd"
+    },
+    "配置文件 1": {
+      "commandName": "Project",
+      "commandLineArgs": "-dm -epp D:\\LessonShowTools\\LessonShowTools\\bin\\Debug\\net8.0-windows\\win-x64"
+    },
+    "LessonShowTools (启动指定 Uri)": {
+      "commandName": "Project",
+      "commandLineArgs": "--uri LessonShowTools://app/settings/automation"
+    },
+    "LessonShowTools (禁用集控) verbose": {
+      "commandName": "Project",
+      "commandLineArgs": "-dm -v"
+    },
+    "LessonShowTools_Pakaging": {
+      "commandName": "MsixPackage",
+      "alwaysReinstallApp": false,
+      "remoteDebugEnabled": false,
+      "allowLocalNetworkLoopbackProperty": true,
+      "authenticationMode": "Windows",
+      "doNotLaunchApp": false,
+      "remoteDebugMachine": "",
+      "nativeDebugging": false
+    },
+    "LessonShowTools (水印)": {
+      "commandName": "Project",
+      "commandLineArgs": "-ossw"
+    }
+  }
+}
