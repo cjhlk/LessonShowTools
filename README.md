@@ -11,21 +11,12 @@ LessonShowTools 是一款适用于班级多媒体屏幕的课表信息显示工�
 修改的内容：
 
 - 移除了 Sentry 遥测数据收集
-- 移除了插件市场
-- 禁用了自动化
-- 移除了更新功能
 - 添加课程表强制顶置功能（能顶过顶置程序）
-- 移除了天气API
 - 默认隐藏组件，提醒设置（可以使用Uri调用）
 - 移除所有对服务器发送数据的操作
 - 隐藏了集控设置的入口（可以使用Uri调用）
-- 移除了自动备份
-- 移除HoYoStickers，改为使用AppIcon，移除回声洞
-- 其他一些修改：Assets\Documents\ChangeLog.md和Privacy_.md，Assets\AsciiLogo.txt，AsciiLogo.txt，default-subjects.json等
-- 移除了EdgeTTS
 - 添加任务计划自动启动和Run注册表自动启动，移除原来通过在启动文件夹放快捷方式启动方式
 - 优化Log记录
-- 1.0.1.24061 添加5s检测终止CI进程功能
 
 ### 课表信息显示
 
